@@ -15,19 +15,19 @@ adminRouter.post("/signin", function (req, res) {
     })
 })
 
-adminRouter.post("/", function (req, res) {
+adminRouter.post("/course", function (req, res) {
     res.json({
         message: "Successfully signed in"
     })
 })
 
-adminRouter.put("/", function (req, res) {
+adminRouter.put("/course", function (req, res) {
     res.json({
         message: "Successfully signed in"
     })
 })
 
-adminRouter.get("/preview", function (req, res) {
+adminRouter.get("/course/preview", function (req, res) {
     res.json({
         message: "Successfully signed in"
     })

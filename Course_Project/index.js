@@ -17,11 +17,11 @@ async function Main() {
     console.log("DB STRING:", uri); 
 
     if (!uri) {
-        console.error("❌ No DB connection string found in .env!");
+        console.error("No DB connection string found in .env!");
         return;
     }
 
-     await mongoose.connect(uri);
+    await mongoose.connect(uri);
     app.listen(3000);
 }
 
