@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const courseRouter = Router();
 
-courseRouter.get("/all", function (req, res) {
+courseRouter.get("/preview", function (req, res) {
     res.json({
         message: "Get all courses"
     })

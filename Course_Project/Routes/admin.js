@@ -15,12 +15,23 @@ adminRouter.post("/signin", function (req, res) {
     })
 })
 
-adminRouter.post("/createcourse", function (req, res) {
+adminRouter.post("/", function (req, res) {
     res.json({
         message: "Successfully signed in"
     })
 })
 
+adminRouter.put("/", function (req, res) {
+    res.json({
+        message: "Successfully signed in"
+    })
+})
+
+adminRouter.get("/preview", function (req, res) {
+    res.json({
+        message: "Successfully signed in"
+    })
+})
 
 module.exports = {
     adminRouter: adminRouter
