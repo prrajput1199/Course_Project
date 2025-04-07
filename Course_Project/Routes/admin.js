@@ -1,9 +1,11 @@
+require('dotenv').config();
 const { Router } = require("express");
-const { creatorModel } = require("../db");
+const { creatorModel, courseModel } = require("../db");
 const bcrypt = require("bcrypt");
 const { z } = require("zod");
-const JWT = require("jsonwebtoken")
-const JWT_ADMIN_SECRET = "bsjkvbkbsjkdvjkbsjdvjsjkdvjksdk";
+const JWT = require("jsonwebtoken");
+const JWT_ADMIN_SECRET = process.env.JWT_ADMIN_SECRET;
+const { adminMiddleware } = require("../middlewares/admin")
 
 const adminRouter = Router();
 
@@ -60,14 +62,14 @@ adminRouter.post("/signin", async function (req, res) {
         email: email
     })
 
-    const { password } = userFound;
+    const { password } = adminFound;
     const HashedPasswordCheck = await bcrypt.compare(myPlainPassWord, password);
 
     if (HashedPasswordCheck) {
 
         let token = JWT.sign(
             {
-                userId: adminFound._id.toString(),
+                adminId: adminFound._id.toString(),
             },
             JWT_ADMIN_SECRET)
 
@@ -85,21 +87,77 @@ adminRouter.post("/signin", async function (req, res) {
     }
 })
 
-adminRouter.post("/course", function (req, res) {
+adminRouter.post("/course", adminMiddleware, async function (req, res) {
+    const adminId = req.adminId;
+
+    const { title, description, price, imageURL } = req.body;
+
+    try {
+        let course = await courseModel.create({
+            title: title,
+            description: description,
+            price: price,
+            imageURL: imageURL,
+            creatorId: adminId
+        })
+
+        res.json({
+            message: "Course Created",
+            courseId: course._id
+        })
+
+    } catch (error) {
+        res.status(300).json({
+            message: error
+        })
+    }
+
+})
+
+
+adminRouter.put("/course", adminMiddleware, async function (req, res) {
+
+    const adminId = req.adminId;
+    const { title, description, price, imageURL, courseId } = req.body;
+
+    let course = await courseModel.findOne({
+        _id: courseId,
+        creatorId: adminId
+    })
+
+    if (!course) {
+        res.status(300).json({
+            message: " You are not allowed to update this course"
+        });
+        return;
+    }
+
+    await courseModel.updateOne(({
+        _id: courseId,
+    }), {
+        title: title,
+        description: description,
+        price: price,
+        imageURL: imageURL,
+    })
+
     res.json({
-        message: "Successfully signed in"
+        message: "Successfully updated",
+        courseId: courseId
     })
 })
 
-adminRouter.put("/course", function (req, res) {
-    res.json({
-        message: "Successfully signed in"
-    })
-})
+adminRouter.get("/course/preview", adminMiddleware, async function (req, res) {
 
-adminRouter.get("/course/preview", function (req, res) {
+    let adminId = req.adminId;
+
+    const Courses = await courseModel.find({
+        creatorId : adminId
+    })
+
     res.json({
-        message: "Successfully signed in"
+        message: " successfully fetched",
+        Courses: Courses,
     })
 })
 

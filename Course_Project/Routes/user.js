@@ -1,10 +1,12 @@
 const { Router } = require("express");
+require('dotenv').config();
 const bcrypt = require("bcrypt");
 const { z } = require("zod");
-const JWT = require("jsonwebtoken")
-const JWT_USER_SECRET = "bsjkvbkbsjkdvjkbsjdvjsjkdvjksdkv";
+const JWT = require("jsonwebtoken");
+const JWT_USER_SECRET = process.env.JWT_USER_SECRET;
 const { userModel } = require("../db");
 const userRouter = Router();
+const {userMiddleware}=require("../middlewares/user")
 
 userRouter.post("/signup", async function (req, res) {
     const { firstname, lastname, email, password } = req.body;
@@ -47,15 +49,13 @@ userRouter.post("/signup", async function (req, res) {
             message: "Successfully signed up"
         })
     }
-
 });
 
 userRouter.post("/signin", async function (req, res) {
     const email = req.body.email;
     const myPlainPassWord = req.body.password;
-    
 
-    // userModel.find will return empty array even if user is not present so use findone
+    // userModel.find will return empty array even if user is not present , so use findone(Go to definition)
     let userFound = await userModel.findOne({
         email: email
     })
@@ -70,7 +70,7 @@ userRouter.post("/signin", async function (req, res) {
                 userId: userFound._id.toString(),
             },
             JWT_USER_SECRET)
-        
+
         // if you want to do cookie based authentication then you can do here (Learn about it)
 
         res.json({
@@ -85,7 +85,7 @@ userRouter.post("/signin", async function (req, res) {
     }
 });
 
-userRouter.get("/purchased", function (req, res) {
+userRouter.get("/purchased", userMiddleware, function (req, res) {
     res.json({
         message: "Get your purchased courses"
     })
