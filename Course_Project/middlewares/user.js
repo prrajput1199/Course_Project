@@ -10,7 +10,7 @@ function userMiddleware(req, res, next) {
     console.log(decodedToken);
 
     if (decodedToken) {
-        req.userId = decodedToken;
+        req.userId = decodedToken.userId;
         next();
     }
     else {
