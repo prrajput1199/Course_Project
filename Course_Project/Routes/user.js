@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const { z } = require("zod");
 const JWT = require("jsonwebtoken");
 const JWT_USER_SECRET = process.env.JWT_USER_SECRET;
-const { userModel, purchasedModel } = require("../db");
+const { userModel, purchasedModel, courseModel } = require("../db");
 const userRouter = Router();
 const { userMiddleware } = require("../middlewares/user")
 
@@ -85,16 +85,32 @@ userRouter.post("/signin", async function (req, res) {
     }
 });
 
-userRouter.get("/purchased", userMiddleware,async function (req, res) {
+userRouter.get("/purchased", userMiddleware, async function (req, res) {
     const userId = req.userId;
 
     const courses = await purchasedModel.find({
         userId: userId
     })
 
+    // let allpurchaseids = [];
+
+    // for (let index = 0; index < courses.length; index++) {
+    //     allpurchaseids.push(courses[index].courseId);
+    // }
+
+    // const purchasedCourses = await courseModel.find({
+    //     _id: { $in: allpurchaseids }
+    // })
+
+    const purchasedCourses = await courseModel.find({
+        _id: { $in: courses.map(el => el.courseId) }
+    })
+
+    console.log(" purchasedCourses => ", purchasedCourses);
+
     res.json({
         message: "Get your purchased courses",
-        // purchasedCourses : 
+        Courses: purchasedCourses
     })
 });
 
