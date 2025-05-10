@@ -39,7 +39,7 @@
         <pre><code>git clone https://github.com/prrajput1199/Course_Project.git</code></pre>
       </li>
       <li>Install backend dependencies:
-        <pre><code>cd server
+        <pre><code>cd Course_project
 npm install</code></pre>
       </li>
       <li>Create a <code>.env</code> file in <code>/server</code>:
@@ -48,11 +48,6 @@ JWT_SECRET=your_jwt_secret</code></pre>
       </li>
       <li>Start backend:
         <pre><code>npm start</code></pre>
-      </li>
-      <li>Setup frontend:
-        <pre><code>cd ../Course_Project
-npm install
-npm start</code></pre>
       </li>
     </ol>
   </div>
