@@ -36,7 +36,7 @@
     <h2>⚙️ How to Run Locally</h2>
     <ol>
       <li>Clone the repo:
-        <pre><code>git clone https://github.com/your-username/course-app.git</code></pre>
+        <pre><code>git clone https://github.com/prrajput1199/Course_Project.git</code></pre>
       </li>
       <li>Install backend dependencies:
         <pre><code>cd server
