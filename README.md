@@ -50,7 +50,7 @@ JWT_SECRET=your_jwt_secret</code></pre>
         <pre><code>npm start</code></pre>
       </li>
       <li>Setup frontend:
-        <pre><code>cd ../client
+        <pre><code>cd ../Course_Project
 npm install
 npm start</code></pre>
       </li>
